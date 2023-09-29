@@ -14,8 +14,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
       ],
 -----Add async storage for login---------
 
+ await AsyncStorage.setItem('username', username);
+await AsyncStorage.setItem('password', password);
 
-
+const storedUsername = await AsyncStorage.getItem('username');
+const storedPassword = await AsyncStorage.getItem('password');
 
 
 **********for contact list***********
