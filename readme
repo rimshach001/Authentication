@@ -1,4 +1,18 @@
+***************for biometric authentication*************
+--------add library------
+import * as LocalAuthentication from 'expo-local-authentication'
+import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+-------- app.json------------
+
+ [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow to use Face ID."
+        }
+      ],
+-----Add async storage for login---------
 
 
 
