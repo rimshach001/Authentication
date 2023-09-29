@@ -1,0 +1,19 @@
+
+
+
+
+
+
+**********for contact list***********
+-------add library-------------
+npx expo install expo-contacts
+
+-------add plugin for contact-------
+[
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
+        }
+      ]
+
+
