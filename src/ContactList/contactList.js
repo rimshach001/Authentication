@@ -10,8 +10,9 @@ import { ActivityIndicator } from 'react-native';
 import { TextInput } from 'react-native';
 const ContactList = () => {
   const [contacts, setcontacts] = useState([])
+  const [selectedcontacts, SetSelectedcontacts] = useState([])
   const [searchText, setSearchText] = useState(''); // State for search input
-
+  const [searchedData, setSearchedData] = useState(false)
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const sectionListRef = useRef(null); // Create a ref for the FlatList
   const [loading, setLoading] = useState(true)
@@ -32,7 +33,7 @@ const ContactList = () => {
         }
       }
     })();
-  }, [currentSectionIndex]);
+  }, [currentSectionIndex,currentSectionIndex]);
   const pressContact = (item) => {
     console.log(item, "pppp")
     if (item.phoneNumbers && item.phoneNumbers.length > 0) {
@@ -67,20 +68,41 @@ const ContactList = () => {
   // };
   const handleLetterPress = (letter) => {
     const sectionIndex = organizedContacts.findIndex((section) =>
-      section.title === letter
-    );
+      section.title === letter,
+      );
+      console.log(sectionIndex,"letterIndex", organizedContacts[sectionIndex].title)
 
     setCurrentSectionIndex(sectionIndex);
-    console.log("Index:", currentSectionIndex, "--details--", organizedContacts[currentSectionIndex].title);
+    console.log("Index:", sectionIndex, "--details--", organizedContacts[sectionIndex].title);
     if (sectionIndex !== -1 && sectionListRef.current) {
       sectionListRef.current.scrollToLocation({
         sectionIndex,
-        itemIndex: currentSectionIndex,
+        itemIndex: sectionIndex+1,
       });
     } else {
       Alert.alert(`There is no contact with ${letter} letter`);
     }
   };
+  // const handleLetterPress = (letter) => {
+  //   const sectionIndex = organizedContacts.findIndex((section) =>
+  //     section.title === letter,
+  //   );
+  
+  //   if (sectionIndex !== -1 && sectionListRef.current) {
+  //     // Check if sectionIndex is within the valid range
+  //     if (sectionIndex >= 0 && sectionIndex < organizedContacts.length) {
+  //       sectionListRef.current.scrollToLocation({
+  //         sectionIndex,
+  //         itemIndex: 0, // Scroll to the first item in the section
+  //       });
+  //     } else {
+  //       Alert.alert(`Invalid section index: ${sectionIndex}`);
+  //     }
+  //   } else {
+  //     Alert.alert(`There is no contact with ${letter} letter`);
+  //   }
+  // };
+  
 
 
 
@@ -124,16 +146,24 @@ const ContactList = () => {
 
 
   const filterContacts = (input) => {
+    if(input===''){
+      setSearchedData(false)
+      console.log("-ifff-", searchedData, input)
+    }
+    else{
+      console.log("-elsee--");
+      setSearchedData(true)
+      // setcontacts(contacts)
+      console.log("-----------------", input, "inputtt-----------------------");
+      const filteredContacts = contacts?.filter((contact) => {
+        // const fullName = `${contact.firstName}`.toLowerCase();
+        const SearchData = contact.firstName.toLowerCase().includes(input.toLowerCase());
+        // console.log(SearchData,"---0000000----");
+        return SearchData
+      });
+      SetSelectedcontacts(filteredContacts)
+    }
     setSearchText(input);
-    setcontacts(contacts)
-    console.log("-----------------",input,"inputtt-----------------------");
-    const filteredContacts = contacts?.filter((contact) => {
-      // const fullName = `${contact.firstName}`.toLowerCase();
-      const SearchData=contact.firstName.toLowerCase().includes(input.toLowerCase());
-      console.log(contact.firstName.toLowerCase(),"full");
-      return SearchData
-    });
-    setcontacts(filteredContacts)
   };
   const updateSearch = (text) => {
     setSearchText(text);
@@ -141,7 +171,7 @@ const ContactList = () => {
     if (text === '') {
       setcontacts(contacts);
     } else {
-      console.log(text,"0000");
+      console.log(text, "0000");
       const filteredContacts = filterContacts(text);
       setcontacts(filteredContacts);
     }
@@ -166,35 +196,54 @@ const ContactList = () => {
         <ActivityIndicator size="large" color="white" />
       ) : (
         <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <SectionList
-            ref={sectionListRef}
-            // data={contacts}
-            sections={organizedContacts}
-            renderItem={({ item }) => {
-              return (
-                <View style={{ borderBottomWidth: 1, borderBottomColor: 'grey', height: 40, paddingTop: 9 }}>
-                  <View style={{ flex: 0.8 }}>
-                    <TouchableOpacity onPress={() => pressContact(item)}>
-                      <Text style={{ fontSize: 17, color: 'white', fontWeight: '500' }}>{item.firstName}</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )
-            }}
-            renderSectionHeader={({ section: { title } }) => {
-              // Check if there are contacts in the section
-              const sectionData = organizedContacts.find((sectionData) => sectionData.title === title);
-              if (sectionData && sectionData.data.length > 0) {
+          {searchedData ?
+            (<FlatList
+              data={selectedcontacts}
+              renderItem={({ item }) => {
                 return (
-                  <Text style={{ backgroundColor: 'black', fontSize: 20, fontWeight: 'bold', color: 'white', borderBottomWidth: 1, borderBottomColor: 'grey' }}>
-                    {title}
-                  </Text>
-                );
-              }
-              // Return null for sections with no contacts
-              return null;
-            }}
-          />
+                  <View style={{ borderBottomWidth: 1, borderBottomColor: 'grey', height: 40, paddingTop: 9 }}>
+                    <View style={{ flex: 0.8 }}>
+                      <TouchableOpacity onPress={() => pressContact(item)}>
+                        <Text style={{ fontSize: 17, color: 'white', fontWeight: '500' }}>{item.firstName}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              }}
+            />) :
+            (
+              <SectionList
+                ref={sectionListRef}
+                // data={contacts}
+                sections={organizedContacts}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: 'grey', height: 40, paddingTop: 9 }}>
+                      <View style={{ flex: 0.8 }}>
+                        <TouchableOpacity onPress={() => pressContact(item)}>
+                          <Text style={{ fontSize: 17, color: 'white', fontWeight: '500' }}>{item.firstName}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )
+                }}
+                renderSectionHeader={({ section: { title } }) => {
+                  // Check if there are contacts in the section
+                  const sectionData = organizedContacts.find((sectionData) => sectionData.title === title);
+                  if (sectionData && sectionData.data.length > 0) {
+                    return (
+                      <Text style={{ backgroundColor: 'black', fontSize: 20, fontWeight: 'bold', color: 'white', borderBottomWidth: 1, borderBottomColor: 'grey' }}>
+                        {title}
+                      </Text>
+                    );
+                  }
+                  // Return null for sections with no contacts
+                  return null;
+                }}
+              />
+            )
+          }
+
           <AlphabetList letters={alphabetLetters} onLetterPress={handleLetterPress} />
         </View>
       )

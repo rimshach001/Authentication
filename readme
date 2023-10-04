@@ -1,10 +1,22 @@
+*******************************authenticaion************************
+--------library------------
+'expo-local-authentication'
+-------plugin----------
+[
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow to use Face ID."
+        }
+      ],
+
+
+**************************Async storage********************
+---library---------
+'@react-native-async-storage/async-storage'
 
 
 
-
-
-
-**********for contact list***********
+************************for contact list***********************
 -------add library-------------
 npx expo install expo-contacts
 
@@ -17,3 +29,15 @@ npx expo install expo-contacts
       ]
 
 
+**********************************QR CODE****************************
+
+-------library-----------
+npx expo install expo-barcode-scanner
+
+----------plugin------------
+[
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ]

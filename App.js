@@ -1,13 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import * as LocalAuthentication from 'expo-local-authentication'
-import { useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {  StyleSheet,  View } from 'react-native';
+
 import ContactList from './src/ContactList/contactList';
+import Camera from './src/Images';
+import Qrcode from './src/QRCode';
 export default function App() {
   return (
     <View style={styles.container}>
-      <ContactList/>
+      <Qrcode/>
     </View>
   
   );
@@ -16,8 +15,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    // alignItems: 'center',
+    // backgroundColor: 'black',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   label: {

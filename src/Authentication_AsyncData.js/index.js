@@ -1,6 +1,8 @@
-import { View, Text } from 'react-native'
+import {  Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react'
-
+import * as LocalAuthentication from 'expo-local-authentication'
+import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const index = () => {
     const [start, setstart] = useState(true)
   const [biometricType, setBiometricType] = useState(null);
