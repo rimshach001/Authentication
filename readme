@@ -1,22 +1,10 @@
-*******************************authenticaion************************
---------library------------
-'expo-local-authentication'
--------plugin----------
-[
-        "expo-local-authentication",
-        {
-          "faceIDPermission": "Allow to use Face ID."
-        }
-      ],
-
-
-**************************Async storage********************
----library---------
-'@react-native-async-storage/async-storage'
 
 
 
-************************for contact list***********************
+
+
+
+**********for contact list***********
 -------add library-------------
 npx expo install expo-contacts
 
